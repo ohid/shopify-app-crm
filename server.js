@@ -54,9 +54,10 @@ app.use(createRequestHandler({ build, mode: process.env.NODE_ENV }));
 
 // Bind loopback only — nothing should reach this port except nginx and the
 // cron wrapper, and the box has a public IP.
-const server = app.listen(PORT, "127.0.0.1", () => {
+const HOST = process.env.HOST ?? "0.0.0.0";
+const server = app.listen(PORT, HOST, () => {
   const worker = process.env.NODE_APP_INSTANCE ?? "0";
-  console.log(`[server] worker ${worker} listening on 127.0.0.1:${PORT}`);
+  console.log(`[server] worker ${worker} listening on ${HOST}:${PORT}`);
 });
 
 // pm2 `reload` sends SIGINT to each worker in turn and waits for it to exit
