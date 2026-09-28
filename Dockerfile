@@ -5,16 +5,15 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 
-RUN npm ci --legacy-peer-deps
+RUN npm ci \
+    --legacy-peer-deps \
+    --ignore-scripts
 
 COPY . .
 
-# Explicitly generate Prisma client
 RUN npx prisma generate
 
-# Build React Router application
 RUN npm run build
-
 
 # ---------- Production ----------
 FROM node:24-alpine AS production
